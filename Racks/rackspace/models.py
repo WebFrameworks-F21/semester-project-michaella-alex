@@ -27,7 +27,36 @@ class Unit(models.Model):
         abstract = True
 
 class PatchPanel(Unit):
-    Ports = models.IntegerField()
+    ports = models.IntegerField()
+
+class UPS(Unit):
+    watt_hours = models.FloatField()
+    max_watts = models.FloatField()
+    outlets = models.IntegerField()
+    surge_protection = models.BooleanField()
+
+class JBOD(Unit):
+    disk_slots = models.IntegerField()
+    hdisk_size = models.FloatField()
+
+class Switch(Unit):
+    ports = models.IntegerField()
+
+class Server(Unit):
+    cpu = models.FloatField()  # gigahertz
+    ram = models.FloatField()
+    hdisk_size = models.FloatField()
+    graphics = models.FloatField()
+
+class Network(models.Model):
+    user =  models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length = 25)
+    public = models.ManyToManyField(Public)
+    # ip_range = 
 
 
-    
+class NetworkCard(models.Model):
+    server_id =  models.ForeignKey(Server, on_delete=models.CASCADE)
+    network_id =  models.ForeignKey(Network, on_delete=models.SET_NULL, null=True)
+
+
