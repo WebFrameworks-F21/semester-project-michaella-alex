@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 import {
@@ -11,26 +11,43 @@ import {
 
 import Login from "./views/Login";
 import Signup from "./views/Signup";
+import DashBoard from "./views/DashBoard";
 
 function App() {
+  const [token, setToken] = useState("");
+
+  if (!token) {
+    return (
+      <div className="App">
+        <Router>
+          <div>
+            <Switch>
+              <Route path="/signup">
+                <Signup setToken={setToken} />
+              </Route>
+              <Route path="/login">
+                <Login setToken={setToken} />
+              </Route>
+              <Route path="/">
+                <Redirect to="/login" />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <Router>
         <div>
-          {/* <nav>
-            <Link to="/signup">Sign up</Link>
-            <Link to="/login">Login</Link>
-          </nav> */}
-
           <Switch>
-            <Route path="/signup">
-              <Signup />
-            </Route>
-            <Route path="/login">
-              <Login />
+            <Route path="/dashboard">
+              <DashBoard token={token} />
             </Route>
             <Route path="/">
-              <Redirect to="/login" />
+              <Redirect to="/dashboard" />
             </Route>
           </Switch>
         </div>

@@ -1,15 +1,34 @@
 import React from "react";
 import { useState } from "react";
-export default function Login(props) {
+
+import { Link, Redirect } from "react-router-dom";
+
+async function createUser(credentials) {
+  return fetch("http://localhost:3000/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  }).then((data) => data.json());
+}
+
+export default function Login({ setToken }) {
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userPasswordAgain, setUserPasswordAgain] = useState("");
 
-  const handleSubmit = function (event) {
+  const handleSubmit = async function (event) {
     event.preventDefault();
     console.log(userName);
     console.log(userPassword);
+    const token = await createUser({
+      userName,
+      userPassword,
+    });
+    setToken(token);
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
