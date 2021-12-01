@@ -5,11 +5,6 @@ from .models import Unit, Rack
 class RackSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Rack
-        fields = ['name', 'size']
+        fields = ['name', 'size', 'user']
 
 
-# Serializers define the API representation.
-class UnitSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Unit
-        exclude = ()
