@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 import {
@@ -11,26 +11,58 @@ import {
 
 import Login from "./views/Login";
 import Signup from "./views/Signup";
+import DashBoard from "./views/DashBoard";
+import Racks from "./views/Racks";
+import Objects from "./views/Objects";
+import Ipv4 from "./views/Ipv4";
 
 function App() {
+  const [token, setToken] = useState("development");
+
+  if (!token) {
+    return (
+      <div className="App">
+        <Router>
+          <div>
+            <Switch>
+              <Route path="/signup">
+                <Signup setToken={setToken} />
+              </Route>
+              <Route path="/login">
+                <Login setToken={setToken} />
+              </Route>
+              <Route path="/">
+                <Redirect to="/login" />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <Router>
         <div>
-          {/* <nav>
-            <Link to="/signup">Sign up</Link>
-            <Link to="/login">Login</Link>
-          </nav> */}
-
+          <nav>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/racks">Racks</Link>
+            <Link to="/objects">Objects</Link>
+            <Link to="/ipv4">Ipv4</Link>
+          </nav>
           <Switch>
-            <Route path="/signup">
-              <Signup />
+            <Route path="/dashboard">
+              <DashBoard token={token} />
             </Route>
-            <Route path="/login">
-              <Login />
+            <Route path="/racks">
+              <Racks />
             </Route>
-            <Route path="/">
-              <Redirect to="/login" />
+            <Route path="/objects">
+              <Objects />
+            </Route>
+            <Route path="/ipv4">
+              <Ipv4 />
             </Route>
           </Switch>
         </div>

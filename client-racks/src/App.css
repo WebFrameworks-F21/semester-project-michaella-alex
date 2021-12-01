@@ -1,0 +1,43 @@
+nav {
+  background-color: #666f88;
+  height: 3em;
+  display: flex;
+  align-items: center;
+}
+
+nav a {
+  margin-left: 1em;
+  color: white;
+  font-weight: bold;
+}
+
+a,
+a:hover,
+a:active,
+a:visited {
+  text-decoration: none;
+}
+
+.dash-menu {
+  display: flex;
+  flex-direction: row;
+  height: 90vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-button {
+  width: 15em;
+  height: 20em;
+  background-image: linear-gradient(#666f88, #606980, #3d4251);
+  border-radius: 8px;
+  margin-right: 2em;
+}
+
+.dash-button a,
+.dash-button a:hover,
+.dash-button a:active,
+.dash-button :visited {
+  color: white;
+}
