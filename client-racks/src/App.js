@@ -17,7 +17,7 @@ import Objects from "./views/Objects";
 import Ipv4 from "./views/Ipv4";
 
 function App() {
-  const [token, setToken] = useState("development");
+  const [token, setToken] = useState();
 
   if (!token) {
     return (
@@ -55,14 +55,17 @@ function App() {
             <Route path="/dashboard">
               <DashBoard token={token} />
             </Route>
-            <Route path="/racks">
-              <Racks />
+            <Route path="/racks/">
+              <Racks token={token} />
+            </Route>
+            <Route path="/racks/:id">
+              <Racks token={token} />
             </Route>
             <Route path="/objects">
-              <Objects />
+              <Objects token={token} />
             </Route>
             <Route path="/ipv4">
-              <Ipv4 />
+              <Ipv4 token={token} />
             </Route>
           </Switch>
         </div>
