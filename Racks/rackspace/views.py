@@ -9,8 +9,9 @@ class RackViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset
         public_racks = queryset.filter(public='PB')
+        read_only_racks = queryset.filter(public='RO')
         users_racks = queryset.filter(user=self.request.user.id)
-        return public_racks | users_racks
+        return public_racks | read_only_racks | users_racks
 
 
 
