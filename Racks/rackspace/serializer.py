@@ -1,10 +1,12 @@
 from rest_framework import routers, serializers, viewsets
-from .models import Unit, Rack
+from .models import *
 
 
-class RackSerializer(serializers.HyperlinkedModelSerializer):
+class RackSerializer(serializers.ModelSerializer ):
+
     class Meta:
         model = Rack
-        fields = ['name', 'size', 'user']
+        fields = ['name', 'size', 'user', 'public']
+
 
 

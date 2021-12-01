@@ -6,32 +6,30 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+STATUS_TYPES = [
+    ('PR', 'Private'),
+    ('RO', 'Read-Only'),
+    ('PB', 'Public'),
+]
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
 
-class Public(models.Model):
-    STATUS_TYPES = [
-        ('PR', 'Private'),
-        ('RO', 'Read-Only'),
-        ('PB', 'Public'),
-    ]
-    status = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
-
 class Rack(models.Model):
     name = models.CharField(max_length = 25)
-    user =  models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     size = models.IntegerField()
-    public = models.ManyToManyField(Public)
+    public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
     
 class Unit(models.Model):
     name = models.CharField(max_length=255)
     size = models.IntegerField()
     rack = models.ForeignKey(Rack, on_delete=models.CASCADE)
     start = models.IntegerField()
-    public = models.ManyToManyField(Public)
+    public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
 
     class Meta: 
         abstract = True
@@ -59,9 +57,9 @@ class Server(Unit):
     graphics = models.FloatField()
 
 class Network(models.Model):
-    user =  models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length = 25)
-    public = models.ManyToManyField(Public)
+    public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
 
 class NetworkCard(models.Model):
     server_id = models.ForeignKey(Server, on_delete=models.CASCADE)
