@@ -30,16 +30,15 @@ export default function Racks(props) {
     getRacks();
   }, []);
 
-  // rackList = racks.map((rack) => {
-  //   return (
-  //     <tr>
-  //       <td></td>
-  //       <td></td>
-  //       <td></td>
-  //       <td></td>
-  //     </tr>
-  //   );
-  // });
+  rackList = racks.map((rack) => {
+    return (
+      <tr>
+        <td>{rack.name}</td>
+        <td>{rack.owner}</td>
+        <td>{rack.size}</td>
+      </tr>
+    );
+  });
 
   return (
     <div>
@@ -51,13 +50,6 @@ export default function Racks(props) {
           <th>Name</th>
           <th>Owner</th>
           <th>Size (Us)</th>
-          <th>Visibility</th>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
         </tr>
       </table>
       the id on this page {id}
