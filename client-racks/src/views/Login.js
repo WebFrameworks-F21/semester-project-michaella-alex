@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 async function loginUser(credentials) {
-  return fetch("http://localhost:3000/login", {
+  return fetch("http://localhost:8000/api-auth/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,9 +22,10 @@ export default function Login({ setToken }) {
     console.log(userName);
     console.log(userPassword);
     const token = await loginUser({
-      userName,
-      userPassword,
+      username: userName,
+      password: userPassword,
     });
+    console.log(token);
     setToken(token);
   };
 

@@ -12,9 +12,12 @@ import {
 import Login from "./views/Login";
 import Signup from "./views/Signup";
 import DashBoard from "./views/DashBoard";
+import Racks from "./views/Racks";
+import Objects from "./views/Objects";
+import Ipv4 from "./views/Ipv4";
 
 function App() {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState("development");
 
   if (!token) {
     return (
@@ -42,12 +45,24 @@ function App() {
     <div className="App">
       <Router>
         <div>
+          <nav>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/racks">Racks</Link>
+            <Link to="/objects">Objects</Link>
+            <Link to="/ipv4">Ipv4</Link>
+          </nav>
           <Switch>
             <Route path="/dashboard">
               <DashBoard token={token} />
             </Route>
-            <Route path="/">
-              <Redirect to="/dashboard" />
+            <Route path="/racks">
+              <Racks />
+            </Route>
+            <Route path="/objects">
+              <Objects />
+            </Route>
+            <Route path="/ipv4">
+              <Ipv4 />
             </Route>
           </Switch>
         </div>
