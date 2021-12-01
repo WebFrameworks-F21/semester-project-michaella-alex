@@ -62,8 +62,6 @@ class Network(models.Model):
     user =  models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length = 25)
     public = models.ManyToManyField(Public)
-    # ip_range = 
-
 
 class NetworkCard(models.Model):
     server_id = models.ForeignKey(Server, on_delete=models.CASCADE)
