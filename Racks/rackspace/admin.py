@@ -8,5 +8,6 @@ admin.site.register(JBOD)
 admin.site.register(Server)
 admin.site.register(Network)
 admin.site.register(NetworkCard)
+admin.site.register(Public)
 
 # Register your models here.
