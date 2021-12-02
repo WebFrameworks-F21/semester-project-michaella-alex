@@ -1,7 +1,5 @@
-import React from "react";
-import { useState } from "react";
-
-import { Link, Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 async function loginUser(credentials) {
   const data = await fetch("http://localhost:8000/api-auth/", {
@@ -23,7 +21,7 @@ async function loginUser(credentials) {
   return dataJSON;
 }
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, setUser }) {
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
 
@@ -37,7 +35,10 @@ export default function Login({ setToken }) {
         password: "karamell",
       });
       console.log(token);
-      setToken(token);
+      setToken(token.token);
+      setUser(token.user_id);
+
+      console.log(token.user_id);
     } catch (error) {
       console.log("wrong credentials buddy");
     }

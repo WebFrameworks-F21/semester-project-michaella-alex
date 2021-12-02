@@ -23,9 +23,9 @@ form {
   flex-direction: column;
 }
 
-.label-form {
+/* .label-form {
   display: flex;
-}
+} */
 
 input[type="submit"] {
   width: 5em;
@@ -34,8 +34,7 @@ input[type="submit"] {
 
 label {
   margin-bottom: 1em;
-  align-items: center;
-  width: 12em;
+  /* align-items: center; */
 }
 
 .body {
