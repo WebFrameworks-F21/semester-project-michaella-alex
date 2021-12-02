@@ -16,6 +16,9 @@ import Racks from "./views/Racks";
 import Objects from "./views/Objects";
 import Ipv4 from "./views/Ipv4";
 
+import RacksForm from "./forms/RacksForm";
+import ObjectsForm from "./forms/ObjectsForm";
+
 function App() {
   const [token, setToken] = useState();
 
@@ -44,16 +47,21 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <div>
-          <nav>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/racks">Racks</Link>
-            <Link to="/objects">Objects</Link>
-            <Link to="/ipv4">Ipv4</Link>
-          </nav>
+        <nav>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/racks">Racks</Link>
+          <Link to="/objects">Objects</Link>
+          <Link to="/ipv4">Ipv4</Link>
+        </nav>
+        <div class="body">
           <Switch>
             <Route path="/dashboard">
               <DashBoard token={token} />
+            </Route>
+
+            {/* racks */}
+            <Route path="/racks/new">
+              <RacksForm token={token} />
             </Route>
             <Route path="/racks/">
               <Racks token={token} />
@@ -61,9 +69,15 @@ function App() {
             <Route path="/racks/:id">
               <Racks token={token} />
             </Route>
+
+            {/* objects */}
+            <Route path="/objects/new">
+              <ObjectsForm token={token} />
+            </Route>
             <Route path="/objects">
               <Objects token={token} />
             </Route>
+
             <Route path="/ipv4">
               <Ipv4 token={token} />
             </Route>

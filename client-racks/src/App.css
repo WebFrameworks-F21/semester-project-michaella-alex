@@ -18,6 +18,30 @@ a:visited {
   text-decoration: none;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-form {
+  display: flex;
+}
+
+input[type="submit"] {
+  width: 5em;
+  margin-right: 1em;
+}
+
+label {
+  margin-bottom: 1em;
+  align-items: center;
+  width: 12em;
+}
+
+.body {
+  padding: 2em;
+}
+
 .dash-menu {
   display: flex;
   flex-direction: row;
