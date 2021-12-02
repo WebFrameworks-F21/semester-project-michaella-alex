@@ -1,16 +1,49 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 
 // id name, owner, size, public status
 
-export default function RacksForm(props) {
+async function createRack(details, token) {
+  const response = await fetch("http://localhost:8000/racks/rackspace/", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    },
+    body: JSON.stringify(details),
+  });
+}
+
+export default function RacksForm({ token, user }) {
   const [name, setName] = useState("");
   const [size, setSize] = useState(0);
   const [visibility, setVisibility] = useState("Private");
+  const [redirect, setRedirect] = useState(false);
+
+  const handleSubmit = async function (event) {
+    event.preventDefault();
+    try {
+      const rack = await createRack(
+        {
+          user,
+          name,
+          size,
+          visibility,
+        },
+        token
+      );
+      alert("Rack has been created!");
+      setRedirect(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <h3> Create a new Rack </h3>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
           Rack Name:
           <input
@@ -22,7 +55,7 @@ export default function RacksForm(props) {
         <label>
           Rack Size:
           <input
-            type="text"
+            type="number"
             value={size}
             onChange={(e) => setSize(e.target.value)}
           />
@@ -43,7 +76,7 @@ export default function RacksForm(props) {
         </label>
         <input type="submit" />
       </form>
-      {visibility}
+      {redirect && <Redirect to="/racks" />}
     </div>
   );
 }
