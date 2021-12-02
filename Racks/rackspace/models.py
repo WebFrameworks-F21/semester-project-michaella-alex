@@ -4,6 +4,8 @@ from django.conf import settings
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from polymorphic.models import PolymorphicModel
+
 from rest_framework.authtoken.models import Token
 
 STATUS_TYPES = [
@@ -24,15 +26,12 @@ class Rack(models.Model):
     size = models.IntegerField()
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
     
-class Unit(models.Model):
+class Unit(PolymorphicModel):
     name = models.CharField(max_length=255)
     size = models.IntegerField()
     rack = models.ForeignKey(Rack, on_delete=models.CASCADE)
     start = models.IntegerField()
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
-
-    class Meta: 
-        abstract = True
 
 class PatchPanel(Unit):
     ports = models.IntegerField()

@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "corsheaders",
+    'corsheaders',
+    'polymorphic',
     'rest_framework',
     'rest_framework.authtoken',
     'rackspace.apps.RackspaceConfig',
@@ -77,6 +78,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+if DEBUG:
+    REST_FRAMEWORK = {
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.TokenAuthentication',  # <-- And here
+        ],
+    }
 
 WSGI_APPLICATION = 'Racks.wsgi.application'
 
