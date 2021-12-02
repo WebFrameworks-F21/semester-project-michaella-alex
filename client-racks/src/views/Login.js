@@ -4,13 +4,23 @@ import { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 async function loginUser(credentials) {
-  return fetch("http://localhost:8000/api-auth/", {
+  const data = await fetch("http://localhost:8000/api-auth/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
-  }).then((data) => data.json());
+  });
+
+  const dataJSON = data.json();
+  const status = data.status;
+  console.log(data);
+
+  if (status !== 200) {
+    throw "wrong credentials";
+  }
+
+  return dataJSON;
 }
 
 export default function Login({ setToken }) {
@@ -19,14 +29,18 @@ export default function Login({ setToken }) {
 
   const handleSubmit = async function (event) {
     event.preventDefault();
-    console.log(userName);
-    console.log(userPassword);
-    const token = await loginUser({
-      username: userName,
-      password: userPassword,
-    });
-    console.log(token);
-    setToken(token);
+    try {
+      const token = await loginUser({
+        // username: userName,
+        // password: userPassword,
+        username: "ming",
+        password: "karamell",
+      });
+      console.log(token);
+      setToken(token);
+    } catch (error) {
+      console.log("wrong credentials buddy");
+    }
   };
 
   return (
