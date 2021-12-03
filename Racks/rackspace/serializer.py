@@ -30,6 +30,7 @@ class UnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Unit
         exclude = ()
+        ordering = ['start']
 
 class RackSerializer(serializers.ModelSerializer):
     items = UnitSerializer(many=True, read_only=True)
