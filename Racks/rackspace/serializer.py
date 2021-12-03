@@ -59,11 +59,11 @@ class ProjectPolymorphicSerializer(PolymorphicSerializer):
 
 
 class NetworkSerializer(serializers.ModelSerializer):
-    cards = NetworkCardSerializer(many=True, read_only=True)
+    devices = NetworkCardSerializer(many=True, read_only=True)
 
     class Meta:
         model = Network
-        exclude = ()
+        fields = ['user', 'name', 'public', 'devices']
 
 
 
