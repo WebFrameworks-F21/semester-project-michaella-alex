@@ -1,4 +1,6 @@
 from rest_framework import routers, serializers, viewsets
+from rest_framework.fields import SerializerMethodField
+
 from .models import *
 from rest_polymorphic.serializers import PolymorphicSerializer
 
@@ -26,18 +28,20 @@ class NetworkCardSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class UnitSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Unit
         exclude = ()
-        ordering = ['start']
 
 class RackSerializer(serializers.ModelSerializer):
-    items = UnitSerializer(many=True, read_only=True)
+    items = SerializerMethodField(method_name='get_units')
 
     class Meta:
         model = Rack
         fields = ['id', 'name', 'size', 'user', 'public', 'items']
+
+    def get_units(self, instance):
+        items = instance.items.order_by('start')
+        return UnitSerializer(items, many=True).data
 
 class UpsSerializer(serializers.ModelSerializer):
 
