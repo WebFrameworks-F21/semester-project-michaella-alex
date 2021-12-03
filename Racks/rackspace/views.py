@@ -28,7 +28,8 @@ class UnitViewSet(viewsets.ModelViewSet):
         public_units = queryset.filter(public='PB')
         read_only_units = queryset.filter(public='RO')
         users_units = queryset.filter(rack__user=self.request.user.id)
-        return public_units | read_only_units | users_units
+        set = public_units | read_only_units | users_units
+        return set.order_by('start')
 
 
 class NetworkViewSet(viewsets.ModelViewSet):

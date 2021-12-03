@@ -47,18 +47,22 @@ class Unit(PolymorphicModel):
 class PatchPanel(Unit):
     ports = models.IntegerField()
 
+
 class UPS(Unit):
     watt_hours = models.FloatField()
     max_watts = models.FloatField()
     outlets = models.IntegerField()
     surge_protection = models.BooleanField()
 
+
 class JBOD(Unit):
     disk_slots = models.IntegerField()
     hdisk_size = models.FloatField()
 
+
 class Switch(Unit):
     ports = models.IntegerField()
+
 
 class Server(Unit):
     cpu = models.FloatField()  # gigahertz
@@ -71,9 +75,14 @@ class Network(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length = 25)
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
+    ip_address = models.GenericIPAddressField(blank=True, null=True, protocol='IPv4')
+    subnet_mask = models.GenericIPAddressField(blank=True, null=True, protocol='IPv4')
 
     def __str__(self):
         return "{} ({})".format(self.name, self.user)
+
+    #def get_starting_range(self):
+
 
 class NetworkCard(models.Model):
     server_id = models.ForeignKey(Server, on_delete=models.CASCADE, related_name='cards')
