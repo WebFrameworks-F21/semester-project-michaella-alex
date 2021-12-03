@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Rack
+from .models import Rack, PatchPanel
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
@@ -45,3 +45,27 @@ class RackTest(TestCase):
         res = client.post('/api-auth/', {"username": "1", "password": "7"}, format="json")
         print(res)
         self.assertTrue(res)
+
+class UnitTest(TestCase):
+    def setUp(self):
+        users = get_user_model()
+        user = users.objects.create(username="1", password="7")
+        rack = Rack.objects.create(id=1, name="rack", size=48, user=user)
+
+    def test_fits(self):
+        rack = Rack.objects.get(name="rack")
+        client = APIClient()
+        user = get_user_model().objects.get(username="1")
+        client.force_authenticate(user=user)
+        response = client.post('/racks/unit/',
+               {'name': 'g', 'size': 4, 'start': 1, 'rack': rack.id, 'ports':4, 'resourcetype':'PatchPanel'},
+                               format='json')
+        self.assertEqual(response.status_code, 201)
+        response = client.post('/racks/unit/',
+                   {'name': '3', 'size': 4, 'start': 8, 'rack': rack.id, 'ports': 4, 'resourcetype': 'PatchPanel'},
+                   format='json')
+        self.assertEqual(response.status_code, 201)
+
+    def test_no_fits(self):
+        rack = Rack.objects.get(name="rack")
+        patch1 = PatchPanel.objects.create(size=4, start=3, rack=rack, ports=4)

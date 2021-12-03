@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
 
@@ -29,6 +30,8 @@ class Rack(models.Model):
     def __str__(self):
         return "{} ({})".format(self.name, self.user)
 
+
+
 class Unit(PolymorphicModel):
     name = models.CharField(max_length=255)
     size = models.IntegerField()
@@ -38,6 +41,8 @@ class Unit(PolymorphicModel):
 
     def __str__(self):
         return "{} ({})".format(self.name, self.rack.user)
+
+
 
 class PatchPanel(Unit):
     ports = models.IntegerField()

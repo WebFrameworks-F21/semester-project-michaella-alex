@@ -2,8 +2,17 @@ from rest_framework import routers, serializers, viewsets
 from .models import *
 from rest_polymorphic.serializers import PolymorphicSerializer
 
-
-
+def check_fit(data):
+    units = Unit.objects.filter(rack=data['rack'])
+    start = data['start']
+    end = start + data['size']
+    for unit in units:
+        unit_start = unit.start
+        unit_end = unit_start + unit.size
+        if unit_start < start < unit_end:
+            raise serializers.ValidationError('Object does not fit')
+        if unit_start < end < unit_end:
+            raise serializers.ValidationError('Object does not fit')
 
 class NetworkCardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,10 +20,10 @@ class NetworkCardSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class UnitSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Unit
         exclude = ()
-
 
 class RackSerializer(serializers.ModelSerializer):
     items = UnitSerializer(many=True, read_only=True)
@@ -24,11 +33,21 @@ class RackSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'size', 'user', 'public', 'items']
 
 class UpsSerializer(serializers.ModelSerializer):
+
+    def validate(self, data):
+        check_fit(data)
+        return data
+
     class Meta:
         model = UPS
         exclude = ()
 
 class JbodSerializer(serializers.ModelSerializer):
+
+    def validate(self, data):
+        check_fit(data)
+        return data
+
     class Meta:
         model = JBOD
         exclude = ()
@@ -37,16 +56,28 @@ class JbodSerializer(serializers.ModelSerializer):
 class ServerSerializer(serializers.ModelSerializer):
     cards = NetworkCardSerializer(many=True, read_only=True)
 
+    def validate(self, data):
+        check_fit(data)
+        return data
+
     class Meta:
         model = Server
         exclude = ()
 
 class PatchPanelSerializer(serializers.ModelSerializer):
+    def validate(self, data):
+        check_fit(data)
+        return data
+
     class Meta:
         model = PatchPanel
         exclude = ()
 
 class SwitchSerializer(serializers.ModelSerializer):
+    def validate(self, data):
+        check_fit(data)
+        return data
+
     class Meta:
         model = Switch
         exclude = ()
