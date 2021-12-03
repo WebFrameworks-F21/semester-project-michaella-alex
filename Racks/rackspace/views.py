@@ -39,7 +39,7 @@ class NetworkViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         public_networks = queryset.filter(public='PB')
         read_only_networks = queryset.filter(public='RO')
-        users_networks = queryset.filter(rack__user=self.request.user.id)
+        users_networks = queryset.filter(user=self.request.user.id)
         return public_networks | read_only_networks | users_networks
 
 

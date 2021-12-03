@@ -25,13 +25,19 @@ class Rack(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     size = models.IntegerField()
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
-    
+
+    def __str__(self):
+        return "{} ({})".format(self.name, self.user)
+
 class Unit(PolymorphicModel):
     name = models.CharField(max_length=255)
     size = models.IntegerField()
-    rack = models.ForeignKey(Rack, on_delete=models.CASCADE)
+    rack = models.ForeignKey(Rack, on_delete=models.CASCADE, related_name='items')
     start = models.IntegerField()
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
+
+    def __str__(self):
+        return "{} ({})".format(self.name, self.rack.user)
 
 class PatchPanel(Unit):
     ports = models.IntegerField()
@@ -55,13 +61,19 @@ class Server(Unit):
     hdisk_size = models.FloatField()
     graphics = models.FloatField()
 
+
 class Network(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length = 25)
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
 
+    def __str__(self):
+        return "{} ({})".format(self.name, self.user)
+
 class NetworkCard(models.Model):
-    server_id = models.ForeignKey(Server, on_delete=models.CASCADE)
-    network_id = models.ForeignKey(Network, on_delete=models.SET_NULL, null=True)
+    server_id = models.ForeignKey(Server, on_delete=models.CASCADE, related_name='cards')
+    network_id = models.ForeignKey(Network, on_delete=models.SET_NULL, null=True, related_name='devices')
     ip_address = models.GenericIPAddressField(blank=True, null=True, protocol='IPv4')
 
+    def __str__(self):
+        return "{}, ({})".format(self.ip_address, self.server_id)

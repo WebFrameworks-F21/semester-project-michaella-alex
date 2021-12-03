@@ -3,10 +3,7 @@ from .models import *
 from rest_polymorphic.serializers import PolymorphicSerializer
 
 
-class RackSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Rack
-        fields = ['id', 'name', 'size', 'user', 'public']
+
 
 class NetworkCardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +14,14 @@ class UnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Unit
         exclude = ()
+
+
+class RackSerializer(serializers.ModelSerializer):
+    items = UnitSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Rack
+        fields = ['id', 'name', 'size', 'user', 'public', 'items']
 
 class UpsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,11 +64,11 @@ class ProjectPolymorphicSerializer(PolymorphicSerializer):
 
 
 class NetworkSerializer(serializers.ModelSerializer):
-    cards = NetworkCardSerializer(many=True, read_only=True)
+    devices = NetworkCardSerializer(many=True, read_only=True)
 
     class Meta:
         model = Network
-        exclude = ()
+        fields = ['user', 'name', 'public', 'devices']
 
 
 
