@@ -6,9 +6,12 @@ from rest_polymorphic.serializers import PolymorphicSerializer
 class RackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rack
-        fields = ['name', 'size', 'user', 'public']
+        fields = ['id', 'name', 'size', 'user', 'public']
 
-
+class NetworkCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NetworkCard
+        exclude = ()
 
 class UnitSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,12 +28,43 @@ class JbodSerializer(serializers.ModelSerializer):
         model = JBOD
         exclude = ()
 
+
+class ServerSerializer(serializers.ModelSerializer):
+    cards = NetworkCardSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Server
+        exclude = ()
+
+class PatchPanelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatchPanel
+        exclude = ()
+
+class SwitchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Switch
+        exclude = ()
+
+
 class ProjectPolymorphicSerializer(PolymorphicSerializer):
     model_serializer_mapping = {
         Unit: UnitSerializer,
         UPS: UpsSerializer,
         JBOD: JbodSerializer,
+        Switch: SwitchSerializer,
+        PatchPanel: PatchPanelSerializer,
+        Server: ServerSerializer
     }
+
+
+class NetworkSerializer(serializers.ModelSerializer):
+    cards = NetworkCardSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Network
+        exclude = ()
+
 
 
 
