@@ -3,10 +3,11 @@ import "./App.css";
 
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link,
-  Redirect,
+  Navigate,
+  Outlet,
 } from "react-router-dom";
 
 import Login from "./views/Login";
@@ -27,19 +28,18 @@ function App() {
     return (
       <div className="App">
         <Router>
-          <div>
-            <Switch>
-              <Route path="/signup">
-                <Signup setToken={setToken} setUser={setUser} />
-              </Route>
-              <Route path="/login">
-                <Login setToken={setToken} setUser={setUser} />
-              </Route>
-              <Route path="/">
-                <Redirect to="/login" />
-              </Route>
-            </Switch>
-          </div>
+          <Routes>
+            <Route
+              path="/signup"
+              element={<Signup setToken={setToken} setUser={setUser} />}
+            />
+            <Route
+              path="/login"
+              element={<Login setToken={setToken} setUser={setUser} />}
+            />
+
+            <Route path="/*" element={<Navigate to="/login" />} />
+          </Routes>
         </Router>
       </div>
     );
@@ -55,34 +55,42 @@ function App() {
           <Link to="/ipv4">Ipv4</Link>
         </nav>
         <div class="body">
-          <Switch>
-            <Route path="/dashboard">
-              <DashBoard token={token} user={user} />
-            </Route>
+          <Routes>
+            <Route
+              exact
+              path="/dashboard"
+              element={<DashBoard token={token} user={user} />}
+            />
 
             {/* racks */}
-            <Route path="/racks/new">
-              <RacksForm token={token} user={user} />
-            </Route>
-            <Route path="/racks/">
-              <Racks token={token} user={user} />
-            </Route>
-            <Route path="/racks/:id">
-              <Racks token={token} user={user} />
-            </Route>
+            <Route
+              exact
+              path="/racks/new"
+              element={<RacksForm token={token} user={user} />}
+            />
 
-            {/* objects */}
-            <Route path="/objects/new">
-              <ObjectsForm token={token} user={user} />
-            </Route>
-            <Route path="/objects">
-              <Objects token={token} user={user} />
-            </Route>
+            <Route
+              path="/racks/"
+              element={<Racks token={token} user={user} />}
+            />
 
-            <Route path="/ipv4">
-              <Ipv4 token={token} user={user} />
-            </Route>
-          </Switch>
+            <Route
+              path="/racks/:id"
+              element={<Racks token={token} user={user} />}
+            />
+
+            <Route
+              path="/objects/new"
+              element={<ObjectsForm token={token} user={user} />}
+            />
+
+            <Route
+              path="/objects"
+              element={<Objects token={token} user={user} />}
+            />
+
+            <Route path="/ipv4" element={<Ipv4 token={token} user={user} />} />
+          </Routes>
         </div>
       </Router>
     </div>

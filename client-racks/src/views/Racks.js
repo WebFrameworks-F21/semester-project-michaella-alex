@@ -6,8 +6,10 @@ import { Link, Redirect } from "react-router-dom";
 
 export default function Racks({ token, user }) {
   const [racks, setRacks] = useState([]);
-  // const { id } = useParams();
+  const { id } = useParams();
   let rackList = [];
+
+  console.log("useParams >>>", useParams());
 
   useEffect(() => {
     async function getRacks() {
@@ -35,7 +37,9 @@ export default function Racks({ token, user }) {
   rackList = racks.map((rack) => {
     return (
       <tr>
-        <td>{rack.name}</td>
+        <Link to={`/racks/${rack.id}`}>
+          <td>{rack.name}</td>
+        </Link>
         <td>{rack.user}</td>
         <td>{rack.size}</td>
       </tr>
