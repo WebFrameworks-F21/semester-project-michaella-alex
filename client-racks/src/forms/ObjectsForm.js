@@ -20,18 +20,48 @@ export default function ObjectsForm({ token, user }) {
   const [size, setSize] = useState(0);
   const [visibility, setVisibility] = useState("Private");
   const [objType, setObjType] = useState("");
-  const [rackLocation, setRackLocation] = useState();
-  const [rackPosition, setRackPosition] = useState();
-  const [ports, setPorts] = useState();
-  const [runTime, setRunTime] = useState();
-  const [watts, setWatts] = useState();
-  const [cpu, setCpu] = useState();
-  const [ram, setRam] = useState();
-  const [storage, setStorage] = useState(); //hdisk_size
-  const [graphics, setGraphics] = useState();
-  const [slots, setSlots] = useState();
-  const [outlets, setOutlets] = useState();
+  const [rackLocation, setRackLocation] = useState("");
+  const [rackPosition, setRackPosition] = useState(0);
+
+  const [ports, setPorts] = useState(0);
+  const [runTime, setRunTime] = useState(0);
+  const [watts, setWatts] = useState(0);
+  const [cpu, setCpu] = useState(0);
+  const [ram, setRam] = useState(0);
+  const [storage, setStorage] = useState(0); //hdisk_size
+  const [graphics, setGraphics] = useState(0);
+  const [slots, setSlots] = useState(0);
+  const [outlets, setOutlets] = useState(0);
   const [surgeProtection, setSurgeProtection] = useState(false);
+
+  const [racks, setRacks] = useState([]);
+
+  useEffect(() => {
+    async function getRacks() {
+      try {
+        const response = await fetch("http://localhost:8000/racks/rackspace/", {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        });
+        const json = await response.json();
+        console.log(json);
+        setRacks(json);
+      } catch (error) {
+        console.log(error, "something went wrong");
+      }
+    }
+
+    getRacks();
+    console.log(racks);
+  }, []);
+
+  const rackOptions = racks.map((rack) => {
+    return <option value={rack.id}>{rack.name}</option>;
+  });
 
   const handleSubmit = async function (event) {
     event.preventDefault();
@@ -46,7 +76,7 @@ export default function ObjectsForm({ token, user }) {
     } else if (objType === "switch") {
       details = { ports };
     } else if (objType === "ups") {
-      details = { watts, runTime };
+      details = { watts, runTime, outlets, surgeProtection };
     }
 
     try {
@@ -119,6 +149,7 @@ export default function ObjectsForm({ token, user }) {
           </select>
         </label>
 
+        {/* gets all the possible racks and then lets user pick it? */}
         <label for="rack">
           Rack Location:
           <select
@@ -126,7 +157,9 @@ export default function ObjectsForm({ token, user }) {
             onChange={(e) => {
               setRackLocation(e.target.value);
             }}
-          ></select>
+          >
+            {rackOptions}
+          </select>
         </label>
 
         <label for="position">
