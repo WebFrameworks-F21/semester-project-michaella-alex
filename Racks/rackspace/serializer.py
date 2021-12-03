@@ -4,8 +4,14 @@ from rest_polymorphic.serializers import PolymorphicSerializer
 
 def check_fit(data):
     units = Unit.objects.filter(rack=data['rack'])
+    bottom = 0
+    top = data['rack'].size
     start = data['start']
     end = start + data['size']
+    if start < bottom or end < bottom:
+        raise serializers.ValidationError('Object does not fit')
+    if start > top or end > top:
+        raise serializers.ValidationError('Object does not fit')
     for unit in units:
         unit_start = unit.start
         unit_end = unit_start + unit.size
