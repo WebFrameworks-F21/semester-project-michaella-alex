@@ -79,6 +79,6 @@ def assign_address(request):
     used_addresses = [x.ip_address for x in active_cards]
 
     addr = get_address(network.ip_address, network.prefix, used_addresses)
-    network_card.ip_address = addr
+    network_card.ip_address = str(addr)
     network_card.save()
-    return Response({"message": "Success"})
+    return Response({"message": "Success", "IP": str(addr)}, status=201)

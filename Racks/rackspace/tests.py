@@ -79,6 +79,8 @@ class UnitTest(TestCase):
                    {'name': '3', 'size': 4, 'start': 1, 'rack': rack.id, 'ports': 4, 'resourcetype': 'PatchPanel'},
                    format='json')
         self.assertEqual(response.status_code, 400)
+
+
 class NetworkTest(TestCase):
     def setUp(self):
         users = get_user_model()
@@ -96,8 +98,17 @@ class NetworkTest(TestCase):
             prefix=24
         )
         NetworkCard.objects.create(
+            id=1,
             server_id=server
         )
 
-    def test_thing(self):
-        return True
+    def test_assignment(self):
+        network_card = NetworkCard.objects.get(id=1)
+        network = Network.objects.get(name='Network')
+        client = APIClient()
+        user = get_user_model().objects.get(username="1")
+        client.force_authenticate(user=user)
+        response = client.post('/racks/assign-ip',
+        {'network_card': network_card.id, 'network': network.id},
+        format = 'json')
+        self.assertEqual(response.status_code, 201)
