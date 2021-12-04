@@ -43,7 +43,16 @@ class RackSerializer(serializers.ModelSerializer):
         items = instance.items.order_by('start')
         return UnitSerializer(items, many=True).data
 
+
+class SimpleRackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rack
+        fields = ['id', 'name', 'size', 'user', 'public']
+
+
+
 class UpsSerializer(serializers.ModelSerializer):
+    rack = SimpleRackSerializer()
 
     def validate(self, data):
         check_fit(data)
@@ -54,6 +63,7 @@ class UpsSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class JbodSerializer(serializers.ModelSerializer):
+    rack = SimpleRackSerializer()
 
     def validate(self, data):
         check_fit(data)
@@ -65,6 +75,7 @@ class JbodSerializer(serializers.ModelSerializer):
 
 
 class ServerSerializer(serializers.ModelSerializer):
+    rack = SimpleRackSerializer()
     cards = NetworkCardSerializer(many=True, read_only=True)
 
     def validate(self, data):
@@ -76,6 +87,8 @@ class ServerSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class PatchPanelSerializer(serializers.ModelSerializer):
+    rack = SimpleRackSerializer()
+
     def validate(self, data):
         check_fit(data)
         return data
@@ -85,6 +98,8 @@ class PatchPanelSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class SwitchSerializer(serializers.ModelSerializer):
+    rack = SimpleRackSerializer()
+
     def validate(self, data):
         check_fit(data)
         return data

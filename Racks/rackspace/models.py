@@ -38,6 +38,7 @@ class Unit(PolymorphicModel):
     rack = models.ForeignKey(Rack, on_delete=models.CASCADE, related_name='items')
     start = models.IntegerField()
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return "{} ({})".format(self.name, self.rack.user)
@@ -76,12 +77,12 @@ class Network(models.Model):
     name = models.CharField(max_length = 25)
     public = models.CharField(max_length=2, choices=STATUS_TYPES, default='PR')
     ip_address = models.GenericIPAddressField(blank=True, null=True, protocol='IPv4')
-    subnet_mask = models.GenericIPAddressField(blank=True, null=True, protocol='IPv4')
+    prefix = models.IntegerField()
 
     def __str__(self):
         return "{} ({})".format(self.name, self.user)
 
-    #def get_starting_range(self):
+
 
 
 class NetworkCard(models.Model):
