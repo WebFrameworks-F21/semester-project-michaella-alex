@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Rack, PatchPanel, Server, Network
+from .models import Rack, PatchPanel, Server, Network, NetworkCard
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
@@ -68,8 +68,17 @@ class UnitTest(TestCase):
 
     def test_no_fits(self):
         rack = Rack.objects.get(name="rack")
-        patch1 = PatchPanel.objects.create(size=4, start=3, rack=rack, ports=4)
-
+        client = APIClient()
+        user = get_user_model().objects.get(username="1")
+        client.force_authenticate(user=user)
+        response = client.post('/racks/unit/',
+               {'name': 'g', 'size': 4, 'start': 1, 'rack': rack.id, 'ports':4, 'resourcetype':'PatchPanel'},
+                               format='json')
+        self.assertEqual(response.status_code, 201)
+        response = client.post('/racks/unit/',
+                   {'name': '3', 'size': 4, 'start': 1, 'rack': rack.id, 'ports': 4, 'resourcetype': 'PatchPanel'},
+                   format='json')
+        self.assertEqual(response.status_code, 400)
 class NetworkTest(TestCase):
     def setUp(self):
         users = get_user_model()
@@ -86,7 +95,9 @@ class NetworkTest(TestCase):
             ip_address='192.155.155.0',
             prefix=24
         )
+        NetworkCard.objects.create(
+            server_id=server
+        )
 
     def test_thing(self):
-
         return True

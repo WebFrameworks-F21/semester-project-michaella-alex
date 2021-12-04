@@ -17,9 +17,9 @@ def check_fit(data):
     for unit in units:
         unit_start = unit.start
         unit_end = unit_start + unit.size
-        if unit_start < start < unit_end:
+        if unit_start <= start < unit_end:
             raise serializers.ValidationError('Object does not fit')
-        if unit_start < end < unit_end:
+        if unit_start < end <= unit_end:
             raise serializers.ValidationError('Object does not fit')
 
 class NetworkCardSerializer(serializers.ModelSerializer):
@@ -52,7 +52,7 @@ class SimpleRackSerializer(serializers.ModelSerializer):
 
 
 class UpsSerializer(serializers.ModelSerializer):
-    rack = SimpleRackSerializer()
+    rack_detail = SimpleRackSerializer(source='rack', required=False)
 
     def validate(self, data):
         check_fit(data)
@@ -63,7 +63,7 @@ class UpsSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class JbodSerializer(serializers.ModelSerializer):
-    rack = SimpleRackSerializer()
+    rack_detail = SimpleRackSerializer(source='rack', required=False)
 
     def validate(self, data):
         check_fit(data)
@@ -75,7 +75,7 @@ class JbodSerializer(serializers.ModelSerializer):
 
 
 class ServerSerializer(serializers.ModelSerializer):
-    rack = SimpleRackSerializer()
+    rack_detail = SimpleRackSerializer(source='rack', required=False)
     cards = NetworkCardSerializer(many=True, read_only=True)
 
     def validate(self, data):
@@ -87,7 +87,7 @@ class ServerSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class PatchPanelSerializer(serializers.ModelSerializer):
-    rack = SimpleRackSerializer()
+    rack_detail = SimpleRackSerializer(source='rack', required=False)
 
     def validate(self, data):
         check_fit(data)
@@ -98,7 +98,7 @@ class PatchPanelSerializer(serializers.ModelSerializer):
         exclude = ()
 
 class SwitchSerializer(serializers.ModelSerializer):
-    rack = SimpleRackSerializer()
+    rack_detail = SimpleRackSerializer(source='rack', required=False)
 
     def validate(self, data):
         check_fit(data)
