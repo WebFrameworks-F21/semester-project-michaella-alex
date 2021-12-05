@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 async function createObject(details, token) {
   console.log(details);
-  // const response = await fetch("http://localhost:8000/racks/rackspace/", {
-  //   method: "POST",
-  //   mode: "cors",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization: `Token ${token}`,
-  //   },
-  //   body: JSON.stringify(details),
-  // });
+  const response = await fetch("http://localhost:8000/racks/unit/", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    },
+    body: JSON.stringify(details),
+  });
 
-  // console.log(response);
+  console.log(response);
 }
 
 export default function ObjectsForm({ token, user }) {
   const [name, setName] = useState("");
   const [size, setSize] = useState(0);
-  const [visibility, setVisibility] = useState("Private");
+  const [visibility, setVisibility] = useState("PR");
   const [objType, setObjType] = useState("");
   const [rackLocation, setRackLocation] = useState("");
   const [rackPosition, setRackPosition] = useState(0);
@@ -35,6 +36,7 @@ export default function ObjectsForm({ token, user }) {
   const [surgeProtection, setSurgeProtection] = useState(false);
 
   const [racks, setRacks] = useState([]);
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     async function getRacks() {
@@ -67,31 +69,40 @@ export default function ObjectsForm({ token, user }) {
     event.preventDefault();
     let details = {};
 
-    if (objType === "server") {
-      details = { cpu, ram, storage, graphics };
-    } else if (objType === "patch-panel") {
+    if (objType === "Server") {
+      details = { cpu, ram, hdisk_size: storage, graphics };
+    } else if (objType === "PatchPanel") {
       details = { ports };
-    } else if (objType === "jbod") {
-      details = { slots, storage };
-    } else if (objType === "switch") {
+    } else if (objType === "JBOD") {
+      details = { disk_slots: slots, hdisk_size: storage };
+    } else if (objType === "Switch") {
       details = { ports };
-    } else if (objType === "ups") {
-      details = { watts, runTime, outlets, surgeProtection };
+    } else if (objType === "UPS") {
+      details = {
+        max_watts: watts,
+        watt_hours: runTime,
+        outlets,
+        surge_protection: surgeProtection,
+      };
     }
 
     try {
-      const rack = await createObject(
+      const obj = await createObject(
         {
-          user,
           name,
           size,
-          visibility,
+          public: visibility,
+          rack: rackLocation,
+          start: rackPosition,
+          resourcetype: objType,
           ...details,
         },
         token
       );
 
-      console.log(rack);
+      console.log(obj);
+      alert("A new Object has been created!");
+      setRedirect(true);
     } catch (error) {
       console.log(error);
     }
@@ -127,9 +138,9 @@ export default function ObjectsForm({ token, user }) {
               setVisibility(e.target.value);
             }}
           >
-            <option value="Private">Private</option>
-            <option value="Read-Only">Read-Only</option>
-            <option value="Public">Public</option>
+            <option value="PR">Private</option>
+            <option value="RO">Read-Only</option>
+            <option value="PB">Public</option>
           </select>
         </label>
         <label for="type">
@@ -141,11 +152,11 @@ export default function ObjectsForm({ token, user }) {
             }}
           >
             <option value=""></option>
-            <option value="server">Server</option>
-            <option value="patch-panel">Patch Panel</option>
-            <option value="jbod">JBODs</option>
-            <option value="switch">Switch</option>
-            <option value="ups">UPS</option>
+            <option value="Server">Server</option>
+            <option value="PatchPanel">Patch Panel</option>
+            <option value="JBOD">JBODs</option>
+            <option value="Switch">Switch</option>
+            <option value="UPS">UPS</option>
           </select>
         </label>
 
@@ -173,7 +184,7 @@ export default function ObjectsForm({ token, user }) {
           />
         </label>
 
-        {(objType === "patch-panel" || objType === "switch") && (
+        {(objType === "PatchPanel" || objType === "Switch") && (
           <div className="label-form">
             <label for="ports">Ports:</label>
             <input
@@ -185,7 +196,7 @@ export default function ObjectsForm({ token, user }) {
           </div>
         )}
 
-        {objType === "ups" && (
+        {objType === "UPS" && (
           <label for="runtime">
             Run-time:
             <input
@@ -198,7 +209,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {objType === "ups" && (
+        {objType === "UPS" && (
           <label for="watts">
             Watts:
             <input
@@ -211,7 +222,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {objType === "ups" && (
+        {objType === "UPS" && (
           <label for="outlets">
             Outlets:
             <input
@@ -223,7 +234,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {objType === "ups" && (
+        {objType === "UPS" && (
           <label for="surge-protection">
             Surge Protection:
             <input
@@ -243,7 +254,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {objType === "server" && (
+        {objType === "Server" && (
           <label for="cpu">
             CPU speed:
             <input
@@ -256,7 +267,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {objType === "server" && (
+        {objType === "Server" && (
           <label for="ram">
             RAM capacity:
             <input
@@ -269,7 +280,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {(objType === "server" || objType === "jbod") && (
+        {(objType === "Server" || objType === "JBOD") && (
           <label for="hdisk">
             Storage:
             <input
@@ -283,7 +294,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {objType === "server" && (
+        {objType === "Server" && (
           <label for="graphics">
             Graphics:
             <input
@@ -296,7 +307,7 @@ export default function ObjectsForm({ token, user }) {
           </label>
         )}
 
-        {objType === "jbod" && (
+        {objType === "JBOD" && (
           <label for="slots">
             Disk Slots:
             <input
@@ -310,6 +321,7 @@ export default function ObjectsForm({ token, user }) {
 
         <input type="submit" />
       </form>
+      {redirect && <Navigate to="/racks" />}
     </div>
   );
 }
