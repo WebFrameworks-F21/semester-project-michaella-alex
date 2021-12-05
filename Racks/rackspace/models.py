@@ -90,5 +90,8 @@ class NetworkCard(models.Model):
     network_id = models.ForeignKey(Network, on_delete=models.SET_NULL, null=True, related_name='devices')
     ip_address = models.GenericIPAddressField(blank=True, null=True, protocol='IPv4')
 
+    class Meta:
+        unique_together = ['network_id', 'ip_address']
+
     def __str__(self):
         return "{}, ({})".format(self.ip_address, self.server_id)
