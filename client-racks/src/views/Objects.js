@@ -8,7 +8,7 @@ export default function Objects({ token, user }) {
   useEffect(() => {
     async function getObjects() {
       try {
-        const response = await fetch("http://localhost:8000/racks/rackspace/", {
+        const response = await fetch("http://localhost:8000/racks/unit/", {
           method: "GET",
           mode: "cors",
           headers: {
@@ -31,8 +31,11 @@ export default function Objects({ token, user }) {
   objectList = objects.map((obj) => {
     return (
       <tr>
-        <td>{obj.name}</td>
-        <td>{obj.user}</td>
+        <td>
+          <Link to={`/object/${obj.id}`}>{obj.name}</Link>
+        </td>
+        <td>{obj.rack.user}</td>
+        <td>{obj.rack.name}</td>
         <td>{obj.size}</td>
       </tr>
     );
@@ -48,6 +51,7 @@ export default function Objects({ token, user }) {
         <tr>
           <th>Name</th>
           <th>Owner</th>
+          <th>Rack</th>
           <th>Size (Us)</th>
         </tr>
         {objectList}

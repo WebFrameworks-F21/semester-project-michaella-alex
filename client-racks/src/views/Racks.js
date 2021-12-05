@@ -6,7 +6,6 @@ import { Link, Redirect } from "react-router-dom";
 
 export default function Racks({ token, user }) {
   const [racks, setRacks] = useState([]);
-  const { id } = useParams();
   let rackList = [];
 
   console.log("useParams >>>", useParams());
@@ -37,9 +36,9 @@ export default function Racks({ token, user }) {
   rackList = racks.map((rack) => {
     return (
       <tr>
-        <Link to={`/racks/${rack.id}`}>
-          <td>{rack.name}</td>
-        </Link>
+        <td>
+          <Link to={`/rack/${rack.id}`}>{rack.name}</Link>
+        </td>
         <td>{rack.user}</td>
         <td>{rack.size}</td>
       </tr>

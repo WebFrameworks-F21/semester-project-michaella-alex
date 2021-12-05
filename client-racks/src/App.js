@@ -20,6 +20,12 @@ import Ipv4 from "./views/Ipv4";
 import RacksForm from "./forms/RacksForm";
 import ObjectsForm from "./forms/ObjectsForm";
 
+import Rack from "./single-views/Rack";
+import Object from "./single-views/Object";
+
+import RackUpdate from "./update_forms/RackUpdate";
+import ObjectUpdate from "./update_forms/ObjectUpdate";
+
 function App() {
   const [token, setToken] = useState();
   const [user, setUser] = useState();
@@ -64,6 +70,16 @@ function App() {
 
             {/* racks */}
             <Route
+              path="/rack/:id"
+              element={<Rack token={token} user={user} />}
+            />
+
+            <Route
+              path="/rack/:id/update"
+              element={<RackUpdate token={token} user={user} />}
+            />
+
+            <Route
               exact
               path="/racks/new"
               element={<RacksForm token={token} user={user} />}
@@ -74,9 +90,15 @@ function App() {
               element={<Racks token={token} user={user} />}
             />
 
+            {/* Objects */}
             <Route
-              path="/racks/:id"
-              element={<Racks token={token} user={user} />}
+              path="/object/:id"
+              element={<Object token={token} user={user} />}
+            />
+
+            <Route
+              path="/object/:id/update"
+              element={<ObjectUpdate token={token} user={user} />}
             />
 
             <Route
