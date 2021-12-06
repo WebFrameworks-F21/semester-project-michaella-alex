@@ -45,7 +45,7 @@ export default function Objects({ token, user }) {
     <div>
       <h2>Objects Available</h2>
       <Link to="/objects/new">
-        <button>New Rack</button>
+        <button>New Object</button>
       </Link>
       <table>
         <tr>
