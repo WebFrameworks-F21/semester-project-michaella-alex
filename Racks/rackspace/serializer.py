@@ -125,7 +125,7 @@ class NetworkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Network
-        fields = ['user', 'name', 'public', 'devices']
+        exclude = ()
 
 
 
