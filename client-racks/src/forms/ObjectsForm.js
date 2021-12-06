@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
-async function createObject(details, token) {
+
+
+async function createObject(details, token, setError) {
   console.log(details);
   const response = await fetch("http://localhost:8000/racks/unit/", {
     method: "POST",
@@ -11,9 +13,14 @@ async function createObject(details, token) {
       Authorization: `Token ${token}`,
     },
     body: JSON.stringify(details),
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      let data = response.json()
+      setError(data)
+    }
   });
-
-  console.log(response);
 }
 
 export default function ObjectsForm({ token, user }) {
@@ -36,6 +43,7 @@ export default function ObjectsForm({ token, user }) {
   const [surgeProtection, setSurgeProtection] = useState(false);
 
   const [racks, setRacks] = useState([]);
+  const [error, setError] = useState(false)
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
@@ -97,12 +105,14 @@ export default function ObjectsForm({ token, user }) {
           resourcetype: objType,
           ...details,
         },
-        token
+        token,
+        setError
       );
-
-      console.log(obj);
-      alert("A new Object has been created!");
-      setRedirect(true);
+      console.log(error)
+      if (error == false) {
+        alert("A new Object has been created!");
+        setRedirect(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +121,7 @@ export default function ObjectsForm({ token, user }) {
   return (
     <div>
       <h3> Create a new Object </h3>
-
+      {error && <p><strong>An error occured</strong></p>}
       <form onSubmit={handleSubmit}>
         <label>
           Object Name:
