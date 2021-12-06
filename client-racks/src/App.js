@@ -15,16 +15,19 @@ import Signup from "./views/Signup";
 import DashBoard from "./views/DashBoard";
 import Racks from "./views/Racks";
 import Objects from "./views/Objects";
-import Ipv4 from "./views/Ipv4";
+import Networks from "./views/Networks";
 
 import RacksForm from "./forms/RacksForm";
 import ObjectsForm from "./forms/ObjectsForm";
+import NetworksForm from "./forms/NetworksForm";
 
 import Rack from "./single-views/Rack";
 import Object from "./single-views/Object";
+import Network from "./single-views/Network";
 
 import RackUpdate from "./update_forms/RackUpdate";
 import ObjectUpdate from "./update_forms/ObjectUpdate";
+import NetworkUpdate from "./update_forms/NetworkUpdate";
 
 function App() {
   const [token, setToken] = useState();
@@ -58,7 +61,7 @@ function App() {
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/racks">Racks</Link>
           <Link to="/objects">Objects</Link>
-          <Link to="/ipv4">Ipv4</Link>
+          <Link to="/networks">Networks</Link>
         </nav>
         <div class="body">
           <Routes>
@@ -111,7 +114,26 @@ function App() {
               element={<Objects token={token} user={user} />}
             />
 
-            <Route path="/ipv4" element={<Ipv4 token={token} user={user} />} />
+            {/* Networks */}
+            <Route
+              path="/network/:id"
+              element={<Network token={token} user={user} />}
+            />
+
+            <Route
+              path="/network/:id/update"
+              element={<NetworkUpdate token={token} user={user} />}
+            />
+
+            <Route
+              path="/networks/new"
+              element={<NetworksForm token={token} user={user} />}
+            />
+
+            <Route
+              path="/networks"
+              element={<Networks token={token} user={user} />}
+            />
           </Routes>
         </div>
       </Router>
