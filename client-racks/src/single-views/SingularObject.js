@@ -1,38 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-async function deleteRack(token, id, setRedirect) {
-  try {
-    const response = await fetch(
-      `http://localhost:8000/racks/rackspace/${id}/`,
-      {
-        method: "DELETE",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      }
-    );
-    alert("Rack has been deleted!");
-    setRedirect(true);
-    console.log(response);
-  } catch (error) {
-    console.log(error, "something went wrong");
-  }
-}
-
-export default function Rack({ token, user }) {
+export default function SingularObject({ token, user }) {
   const { id } = useParams();
   const [rack, setRack] = useState({});
-  const [redirect, setRedirect] = useState(false);
+  const [obj, setObj] = useState({});
+  const [objRack, setObjRack] = useState({});
 
   useEffect(() => {
+    async function getObject() {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/racks/unit/${id}/`,
+          {
+            method: "GET",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${token}`,
+            },
+          }
+        );
+        const json = await response.json();
+        // console.log(json);
+        setObj(json);
+        setObjRack(json.rack_detail);
+        console.log("THE object >>>", obj);
+      } catch (error) {
+        console.log(error, "something went wrong");
+      }
+    }
+
     async function getRack() {
       try {
         const response = await fetch(
-          `http://localhost:8000/racks/rackspace/${id}`,
+          `http://localhost:8000/racks/rackspace/${obj.rack_detail.id}/`,
           {
             method: "GET",
             mode: "cors",
@@ -50,17 +52,22 @@ export default function Rack({ token, user }) {
       }
     }
 
+    getObject();
     getRack();
   }, []);
+
+  // useEffect(())
 
   const objectRows = (function () {
     const rows = [];
     let object = rack.items;
     let index = 0;
 
+    // console.log("object >>>", object);
     for (let i = 1; i < rack.size + 1; i++) {
       if (object[index]) {
         if (object[index].start === i) {
+          // console.log("object is occupying at position", i);
           rows.push(
             <tr>
               <td>{i}</td>
@@ -80,21 +87,18 @@ export default function Rack({ token, user }) {
     return rows;
   })();
 
+  // console.log("rack >>", rack);
+  //   console.log("objectRow >>", objectRows);
+
   return (
     <div>
-      <h2>Rack {rack.name}</h2>
-      <h3>Owned by user {rack.user}</h3>
-
+      <h2>Object {obj.name}</h2>
+      <h3>Located in Rack {objRack.name}</h3>
       <button>
-        <Link to={`/rack/${rack.id}/update`}>Update Rack </Link>
+        <Link to={`/object/${obj.id}/update`}>Update Object</Link>
       </button>
-
-      <button onClick={() => deleteRack(token, id, setRedirect)}>
-        Delete Rack
-      </button>
-
       <div>
-        <p>Size: {rack.size}</p>
+        <p>Size: {obj.size}</p>
         <p>
           Visibility:{" "}
           {rack.public === "PR"
@@ -105,17 +109,13 @@ export default function Rack({ token, user }) {
         </p>
       </div>
 
-      <div className="view">
-        <table>
-          <tr>
-            <th>Position</th>
-            <th>Objects</th>
-          </tr>
-          {objectRows}
-        </table>
-      </div>
-
-      {redirect && <Navigate to="/racks" />}
+      <table>
+        <tr>
+          <th>Position</th>
+          <th>Objects</th>
+        </tr>
+        {objectRows}
+      </table>
     </div>
   );
 }

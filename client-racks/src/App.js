@@ -22,7 +22,7 @@ import ObjectsForm from "./forms/ObjectsForm";
 import NetworksForm from "./forms/NetworksForm";
 
 import Rack from "./single-views/Rack";
-import Object from "./single-views/Object";
+import SingularObject from "./single-views/SingularObject";
 import Network from "./single-views/Network";
 
 import RackUpdate from "./update_forms/RackUpdate";
@@ -96,7 +96,7 @@ function App() {
             {/* Objects */}
             <Route
               path="/object/:id"
-              element={<Object token={token} user={user} />}
+              element={<SingularObject token={token} user={user} />}
             />
 
             <Route

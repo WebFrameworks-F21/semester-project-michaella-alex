@@ -38,7 +38,7 @@ export default function Login({ setToken, setUser }) {
       setToken(token.token);
       setUser(token.user_id);
 
-      console.log(token.user_id);
+      console.log("user id >>>", token.user_id);
     } catch (error) {
       console.log("wrong credentials buddy");
     }
