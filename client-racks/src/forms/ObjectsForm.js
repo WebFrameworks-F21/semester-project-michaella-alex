@@ -321,7 +321,7 @@ export default function ObjectsForm({ token, user }) {
 
         <input type="submit" />
       </form>
-      {redirect && <Navigate to="/racks" />}
+      {redirect && <Navigate to="/objects" />}
     </div>
   );
 }

@@ -94,6 +94,23 @@ export default function ObjectsForm({ token, user }) {
     setName(object.name);
     setSize(object.size);
     setVisibility(object.public);
+    setObjType(object.resourcetype);
+
+    if (object.rack_detail) {
+      setRackLocation(object.rack_detail.id);
+    }
+    setRackPosition(object.start);
+
+    setPorts(object.ports);
+    setRunTime(object.watt_hours);
+    setWatts(object.max_watts);
+    setCpu(object.cpu);
+    setRam(object.ram);
+    setStorage(object.hdisk_size);
+    setGraphics(object.graphics);
+    setSlots(object.disk_slots);
+    setOutlets(object.outlets);
+    setSurgeProtection(object.surge_protection);
   }, [object]);
 
   const rackOptions = racks.map((rack) => {
@@ -357,7 +374,7 @@ export default function ObjectsForm({ token, user }) {
 
         <input type="submit" />
       </form>
-      {redirect && <Navigate to="/racks" />}
+      {redirect && <Navigate to="/objects" />}
     </div>
   );
 }

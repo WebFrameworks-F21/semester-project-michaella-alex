@@ -93,7 +93,7 @@ export default function Rack({ token, user }) {
       <h2>Object {obj.name}</h2>
       <h3>Located in Rack {objRack.name}</h3>
       <button>
-        <Link to={`/rack/${rack.id}/update`}>Update Object</Link>
+        <Link to={`/object/${obj.id}/update`}>Update Object</Link>
       </button>
       <div>
         <p>Size: {obj.size}</p>

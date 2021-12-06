@@ -47,7 +47,7 @@ export default function Racks({ token, user }) {
 
   return (
     <div>
-      <h3>Racks Available</h3>
+      <h2>Racks Available</h2>
       <Link to="/racks/new">
         <button>New Rack</button>
       </Link>

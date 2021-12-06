@@ -1,10 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+
+async function deleteRack(token, id, setRedirect) {
+  try {
+    const response = await fetch(
+      `http://localhost:8000/racks/rackspace/${id}/`,
+      {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
+    alert("Rack has been deleted!");
+    setRedirect(true);
+    console.log(response);
+  } catch (error) {
+    console.log(error, "something went wrong");
+  }
+}
 
 export default function Rack({ token, user }) {
   const { id } = useParams();
   const [rack, setRack] = useState({});
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     async function getRack() {
@@ -65,6 +87,9 @@ export default function Rack({ token, user }) {
       <button>
         <Link to={`/rack/${rack.id}/update`}>Update Rack</Link>
       </button>
+      <button onClick={() => deleteRack(token, id, setRedirect)}>
+        Delete Rack
+      </button>
 
       <div>
         <p>Size: {rack.size}</p>
@@ -85,6 +110,7 @@ export default function Rack({ token, user }) {
         </tr>
         {objectRows}
       </table>
+      {redirect && <Navigate to="/racks" />}
     </div>
   );
 }

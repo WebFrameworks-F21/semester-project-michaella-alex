@@ -45,30 +45,34 @@ export default function Login({ setToken, setUser }) {
   };
 
   return (
-    <div>
-      <div>
-        Don't have an account yet?{" "}
-        <Link to="/signup">Create an account here</Link>
+    <div className="login">
+      <div className="login-box">
+        <h1>Login</h1>
+
+        <form onSubmit={handleSubmit}>
+          <label>
+            Username:
+            <input
+              type="text"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </label>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
+            />
+          </label>
+          <input type="submit" />
+        </form>
+        <div className="login-note">
+          <p>Don't have an account yet?</p>
+          <Link to="/signup">Create an account here</Link>
+        </div>
       </div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={userPassword}
-            onChange={(e) => setUserPassword(e.target.value)}
-          />
-        </label>
-        <input type="submit" />
-      </form>
     </div>
   );
 }
