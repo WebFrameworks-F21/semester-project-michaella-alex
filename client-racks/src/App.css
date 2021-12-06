@@ -121,3 +121,22 @@ th {
   padding: 4px;
   border: 1px solid #686868;
 }
+
+.bar {
+  float: left;
+  background-color: #FF4136;
+  width: 28px;
+  height: 6px;
+  margin: 0px 4px;
+}
+.bar:nth-child(2) {
+  background-color: #FFDC00;
+}
+
+.bar:nth-child(3) {
+  background-color: #2ECC40;
+}
+
+.bar:nth-child(4) {
+  background-color: #01FF70;
+}
