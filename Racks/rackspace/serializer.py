@@ -1,3 +1,5 @@
+import ipaddress
+
 from rest_framework import routers, serializers, viewsets
 from rest_framework.fields import SerializerMethodField
 
@@ -24,25 +26,22 @@ def check_fit(data):
 
 
 def check_ip_valid(data):
-    network_id = data.get("network_id", False)
-    ip_address = data.get("ip_address", False)
-    if network_id and ip_address:
-        network = Network.objects.get(id=network_id)
-        active_cards = NetworkCard.objects.filter(network_id=network)
-        used_addresses = [x.ip_address for x in active_cards]
-        if ip_address not in network.net.hosts():
+    network = data.get("network_id", False)
+    ip_text = data.get("ip_address", False)
+    if network and ip_text:
+        net = ipaddress.ip_network((network.ip_address, network.prefix), False)
+        ip = ipaddress.ip_address(ip_text)
+        if ip not in net.hosts():
             raise serializers.ValidationError('IP Address not valid for this network')
-        elif ip_address in used_addresses:
-            raise serializers.ValidationError('IP Address taken')
     return data
 
 
 class NetworkCardSerializer(serializers.ModelSerializer):
-    network_id = serializers.StringRelatedField()
-    server_id = serializers.StringRelatedField()
+    #network_id = serializers.StringRelatedField()
+    #server_id = serializers.StringRelatedField()
 
-    def check_ip_valid(self, data):
-        check_fit(data)
+    def validate(self, data):
+        check_ip_valid(data)
         return data
 
     class Meta:
