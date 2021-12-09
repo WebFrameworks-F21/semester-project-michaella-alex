@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 
 export default function Objects({ token, user }) {
   const [objects, setObjects] = useState([]);
-  let objectList = [];
+  const [objList, setObjList] = useState([]);
 
   useEffect(() => {
     async function getObjects() {
@@ -28,18 +28,23 @@ export default function Objects({ token, user }) {
     console.log(objects);
   }, []);
 
-  objectList = objects.map((obj) => {
-    return (
-      <tr>
-        <td>
-          <Link to={`/object/${obj.id}`}>{obj.name}</Link>
-        </td>
-        <td>{obj.rack.user}</td>
-        <td>{obj.rack.name}</td>
-        <td>{obj.size}</td>
-      </tr>
-    );
-  });
+  useEffect(() => {
+    if (objects) {
+      let objlist = objects.map((obj) => {
+        return (
+          <tr>
+            <td>
+              <Link to={`/object/${obj.id}`}>{obj.name}</Link>
+            </td>
+            <td>{obj.rack_detail.user}</td>
+            <td>{obj.rack_detail.name}</td>
+            <td>{obj.size}</td>
+          </tr>
+        );
+      });
+      setObjList(objlist);
+    }
+  }, [objects]);
 
   return (
     <div>
@@ -54,7 +59,7 @@ export default function Objects({ token, user }) {
           <th>Rack</th>
           <th>Size (Us)</th>
         </tr>
-        {objectList}
+        {objList}
       </table>
     </div>
   );

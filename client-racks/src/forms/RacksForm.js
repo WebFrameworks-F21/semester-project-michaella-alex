@@ -16,12 +16,12 @@ async function createRack(details, token, setError) {
     if (response.ok) {
       return response.json();
     } else {
-      let data = response.json()
-      setError(true)
-      console.log("theres an error")
-      console.log(data)
-      data.error = true
-      return {error: true};
+      let data = response.json();
+      setError(true);
+      console.log("theres an error");
+      console.log(data);
+      data.error = true;
+      return { error: true };
     }
   });
 }
@@ -46,14 +46,8 @@ export default function RacksForm({ token, user }) {
         token,
         setError
       );
-      console.log(rack)
-      if (rack.error == true) {
-        alert("Something went wrong");
-      }
-      else {
-        alert("Rack has been created!");
-        setRedirect(true);
-      }
+      alert("Rack has been created!");
+      setRedirect(true);
     } catch (error) {
       console.log(error);
     }

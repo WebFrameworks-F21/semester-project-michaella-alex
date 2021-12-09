@@ -36,8 +36,8 @@ export default function NetworkCardsForm({ token, user }) {
       const obj = await createNetworkCard(
         {
           server_id: parseInt(serverId.id),
-          network_id: null,
-          ip_address: null,
+          network_id: parseInt(networkId),
+          ip_address: ipAddress,
         },
         token
       );

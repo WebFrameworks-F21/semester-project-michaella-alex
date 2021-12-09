@@ -11,6 +11,14 @@ async function updateObject(details, token, id) {
       Authorization: `Token ${token}`,
     },
     body: JSON.stringify(details),
+  }).then((res) => {
+    if (!res.ok) {
+      return res.text().then((text) => {
+        throw new Error(JSON.parse(text)["non_field_errors"][0]);
+      });
+    } else {
+      return res.json();
+    }
   });
 
   console.log(response);
@@ -157,13 +165,13 @@ export default function ObjectsForm({ token, user }) {
       alert("A new Object has been created!");
       setRedirect(true);
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 
   return (
     <div>
-      <h3> Create a new Object </h3>
+      <h3> Update Object </h3>
 
       <form onSubmit={handleSubmit}>
         <label>
@@ -172,14 +180,17 @@ export default function ObjectsForm({ token, user }) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </label>
         <label>
           Object Size:
           <input
-            type="text"
+            type="number"
             value={size}
+            min={1}
             onChange={(e) => setSize(e.target.value)}
+            required
           />
           Us
         </label>
@@ -203,8 +214,9 @@ export default function ObjectsForm({ token, user }) {
             onChange={(e) => {
               setObjType(e.target.value);
             }}
+            required
           >
-            <option value=""></option>
+            <option value={undefined}></option>
             <option value="Server">Server</option>
             <option value="PatchPanel">Patch Panel</option>
             <option value="JBOD">JBODs</option>
@@ -221,6 +233,7 @@ export default function ObjectsForm({ token, user }) {
             onChange={(e) => {
               setRackLocation(e.target.value);
             }}
+            required
           >
             {rackOptions}
           </select>
@@ -231,9 +244,9 @@ export default function ObjectsForm({ token, user }) {
           <input
             type="number"
             min={1}
-            max={100}
             value={rackPosition}
             onChange={(e) => setRackPosition(e.target.value)}
+            required
           />
         </label>
 
@@ -245,6 +258,7 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={ports}
               onChange={(e) => setPorts(e.target.value)}
+              required
             />
           </div>
         )}
@@ -257,6 +271,7 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={runTime}
               onChange={(e) => setRunTime(e.target.value)}
+              required
             />{" "}
             hours
           </label>
@@ -270,6 +285,7 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={watts}
               onChange={(e) => setWatts(e.target.value)}
+              required
             />
             {" W"}
           </label>
@@ -283,6 +299,7 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={outlets}
               onChange={(e) => setOutlets(e.target.value)}
+              required
             />
           </label>
         )}
@@ -295,6 +312,7 @@ export default function ObjectsForm({ token, user }) {
               value={true}
               name="surge-protection"
               onChange={(e) => setSurgeProtection(e.target.value)}
+              selected
             />
             {"Yes"}
             <input
@@ -315,6 +333,7 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={cpu}
               onChange={(e) => setCpu(e.target.value)}
+              required
             />
             {" GHz "}
           </label>
@@ -328,6 +347,7 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={ram}
               onChange={(e) => setRam(e.target.value)}
+              required
             />
             {" GB"}
           </label>
@@ -341,9 +361,9 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={storage}
               onChange={(e) => setStorage(e.target.value)}
-            />{" "}
-            {objType === "server" && " TB"}
-            {objType === "jbod" && " "}
+              required
+            />
+            {" TB"}
           </label>
         )}
 
@@ -355,6 +375,7 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={graphics}
               onChange={(e) => setGraphics(e.target.value)}
+              required
             />{" "}
             {" MHz"}
           </label>
@@ -368,10 +389,10 @@ export default function ObjectsForm({ token, user }) {
               min={1}
               value={slots}
               onChange={(e) => setSlots(e.target.value)}
+              required
             />
           </label>
         )}
-
         <input type="submit" />
       </form>
       {redirect && <Navigate to="/objects" />}

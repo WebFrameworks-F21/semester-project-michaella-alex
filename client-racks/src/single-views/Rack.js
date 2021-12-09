@@ -14,12 +14,22 @@ async function deleteRack(token, id, setRedirect) {
           Authorization: `Token ${token}`,
         },
       }
-    );
-    alert("Rack has been deleted!");
-    setRedirect(true);
-    console.log(response);
+    ).then((res) => {
+      if (!res.ok) {
+        return res.text().then((text) => {
+          // console.log(text);
+          // const fuck_this = JSON.parse(text);
+          // console.log("deleting rack", fuck_this);
+          throw new Error("You do not permission to delete rack");
+        });
+      } else {
+        alert("Rack has been deleted!");
+        setRedirect(true);
+        return res.json();
+      }
+    });
   } catch (error) {
-    console.log(error, "something went wrong");
+    alert(error);
   }
 }
 

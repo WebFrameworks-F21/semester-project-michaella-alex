@@ -11,6 +11,14 @@ async function createNetwork(details, token) {
       Authorization: `Token ${token}`,
     },
     body: JSON.stringify(details),
+  }).then((res) => {
+    if (!res.ok) {
+      return res.text().then((text) => {
+        throw new Error(JSON.parse(text)["ip_address"][0]);
+      });
+    } else {
+      return res.json();
+    }
   });
 
   console.log(response);
@@ -46,7 +54,7 @@ export default function NetworksForm({ token, user }) {
       alert("A new Network has been created!");
       setRedirect(true);
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 
