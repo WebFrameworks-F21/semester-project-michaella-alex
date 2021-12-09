@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 
 // id name, owner, size, public status
 
-async function createRack(details, token) {
+async function createRack(details, token, setError) {
   const response = await fetch("http://localhost:8000/racks/rackspace/", {
     method: "POST",
     mode: "cors",
@@ -12,12 +12,24 @@ async function createRack(details, token) {
       Authorization: `Token ${token}`,
     },
     body: JSON.stringify(details),
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      let data = response.json()
+      setError(true)
+      console.log("theres an error")
+      console.log(data)
+      data.error = true
+      return {error: true};
+    }
   });
 }
 
 export default function RacksForm({ token, user }) {
   const [name, setName] = useState("");
   const [size, setSize] = useState(0);
+  const [error, setError] = useState(false);
   const [visibility, setVisibility] = useState("Private");
   const [redirect, setRedirect] = useState(false);
 
@@ -31,10 +43,17 @@ export default function RacksForm({ token, user }) {
           size,
           visibility,
         },
-        token
+        token,
+        setError
       );
-      alert("Rack has been created!");
-      setRedirect(true);
+      console.log(rack)
+      if (rack.error == true) {
+        alert("Something went wrong");
+      }
+      else {
+        alert("Rack has been created!");
+        setRedirect(true);
+      }
     } catch (error) {
       console.log(error);
     }
