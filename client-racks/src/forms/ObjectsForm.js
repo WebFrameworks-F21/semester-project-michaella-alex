@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
-async function createObject(details, token) {
+async function createObject(details, token, setError) {
   console.log(details);
   const response = await fetch("http://localhost:8000/racks/unit/", {
     method: "POST",
@@ -106,8 +106,6 @@ export default function ObjectsForm({ token, user }) {
         },
         token
       );
-
-      console.log(obj);
       alert("A new Object has been created!");
       setRedirect(true);
     } catch (error) {
@@ -118,7 +116,6 @@ export default function ObjectsForm({ token, user }) {
   return (
     <div>
       <h3> Create a new Object </h3>
-
       <form onSubmit={handleSubmit}>
         <label>
           Object Name:
