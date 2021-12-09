@@ -87,7 +87,7 @@ class Network(models.Model):
 
 class NetworkCard(models.Model):
     server_id = models.ForeignKey(Server, on_delete=models.CASCADE, related_name='cards')
-    network_id = models.ForeignKey(Network, on_delete=models.SET_NULL, null=True, related_name='devices')
+    network_id = models.ForeignKey(Network, on_delete=models.SET_NULL, null=True, blank=True, related_name='devices')
     ip_address = models.GenericIPAddressField(blank=True, null=True, protocol='IPv4')
 
     class Meta:
