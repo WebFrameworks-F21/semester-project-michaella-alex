@@ -23,6 +23,9 @@ def check_fit(data):
             raise serializers.ValidationError('Object does not fit')
 
 class NetworkCardSerializer(serializers.ModelSerializer):
+    network_id = serializers.StringRelatedField()
+    server_id = serializers.StringRelatedField()
+
     class Meta:
         model = NetworkCard
         exclude = ()

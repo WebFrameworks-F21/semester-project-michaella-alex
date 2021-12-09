@@ -69,6 +69,7 @@ export default function RacksForm({ token, user }) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </label>
         <label>
@@ -76,7 +77,9 @@ export default function RacksForm({ token, user }) {
           <input
             type="number"
             value={size}
+            min={1}
             onChange={(e) => setSize(e.target.value)}
+            required
           />
           Us
         </label>
@@ -87,6 +90,7 @@ export default function RacksForm({ token, user }) {
             onChange={(e) => {
               setVisibility(e.target.value);
             }}
+            required
           >
             <option value="Private">Private</option>
             <option value="Read-Only">Read-Only</option>
