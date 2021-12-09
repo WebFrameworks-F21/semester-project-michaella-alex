@@ -22,9 +22,28 @@ def check_fit(data):
         if unit_start < end <= unit_end:
             raise serializers.ValidationError('Object does not fit')
 
+
+def check_ip_valid(data):
+    network_id = data.get("network_id", False)
+    ip_address = data.get("ip_address", False)
+    if network_id and ip_address:
+        network = Network.objects.get(id=network_id)
+        active_cards = NetworkCard.objects.filter(network_id=network)
+        used_addresses = [x.ip_address for x in active_cards]
+        if ip_address not in network.net.hosts():
+            raise serializers.ValidationError('IP Address not valid for this network')
+        elif ip_address in used_addresses:
+            raise serializers.ValidationError('IP Address taken')
+    return data
+
+
 class NetworkCardSerializer(serializers.ModelSerializer):
     network_id = serializers.StringRelatedField()
     server_id = serializers.StringRelatedField()
+
+    def check_ip_valid(self, data):
+        check_fit(data)
+        return data
 
     class Meta:
         model = NetworkCard
