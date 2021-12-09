@@ -20,6 +20,7 @@ import Networks from "./views/Networks";
 import RacksForm from "./forms/RacksForm";
 import ObjectsForm from "./forms/ObjectsForm";
 import NetworksForm from "./forms/NetworksForm";
+import NetworkCardsForm from "./forms/NetworkCardsForm";
 
 import Rack from "./single-views/Rack";
 import SingularObject from "./single-views/SingularObject";
@@ -133,6 +134,13 @@ function App() {
             <Route
               path="/networks"
               element={<Networks token={token} user={user} />}
+            />
+
+            {/* Network Cards */}
+
+            <Route
+              path="/server/:id/networkcards/new"
+              element={<NetworkCardsForm token={token} user={user} />}
             />
           </Routes>
         </div>
