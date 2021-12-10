@@ -1,5 +1,5 @@
 ## Installation
-This installion assumes you have Python, Pip, and Node installed.  
+This installation assumes you have Python, Pip, and Node installed.  
 `git clone https://github.com/WebFrameworks-F21/semester-project-michaella-alex.git`  
 Open the repoistory and run  
 `pip install -r requirements.txt  
