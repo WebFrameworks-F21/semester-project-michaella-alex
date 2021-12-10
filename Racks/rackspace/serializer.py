@@ -37,8 +37,6 @@ def check_ip_valid(data):
 
 
 class NetworkCardSerializer(serializers.ModelSerializer):
-    #network_id = serializers.StringRelatedField()
-    #server_id = serializers.StringRelatedField()
 
     def validate(self, data):
         check_ip_valid(data)
@@ -74,6 +72,7 @@ class SimpleRackSerializer(serializers.ModelSerializer):
 
 class UpsSerializer(serializers.ModelSerializer):
     rack_detail = SimpleRackSerializer(source='rack', required=False)
+    user = serializers.StringRelatedField()
 
     def validate(self, data):
         check_fit(data)
@@ -85,6 +84,7 @@ class UpsSerializer(serializers.ModelSerializer):
 
 class JbodSerializer(serializers.ModelSerializer):
     rack_detail = SimpleRackSerializer(source='rack', required=False)
+    user = serializers.StringRelatedField()
 
     def validate(self, data):
         check_fit(data)
@@ -98,6 +98,7 @@ class JbodSerializer(serializers.ModelSerializer):
 class ServerSerializer(serializers.ModelSerializer):
     rack_detail = SimpleRackSerializer(source='rack', required=False)
     cards = NetworkCardSerializer(many=True, read_only=True)
+    user = serializers.StringRelatedField()
 
     def validate(self, data):
         check_fit(data)
@@ -109,6 +110,7 @@ class ServerSerializer(serializers.ModelSerializer):
 
 class PatchPanelSerializer(serializers.ModelSerializer):
     rack_detail = SimpleRackSerializer(source='rack', required=False)
+    user = serializers.StringRelatedField()
 
     def validate(self, data):
         check_fit(data)
@@ -120,6 +122,7 @@ class PatchPanelSerializer(serializers.ModelSerializer):
 
 class SwitchSerializer(serializers.ModelSerializer):
     rack_detail = SimpleRackSerializer(source='rack', required=False)
+    user = serializers.StringRelatedField()
 
     def validate(self, data):
         check_fit(data)
