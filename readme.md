@@ -1,6 +1,6 @@
 ## Installation
 
-Note: This installation assumes you have **Python, Pip,** and **Node** installed. Both client and API were created in a Unix environment.
+Note: This installation assumes you have **Python, Pip,** and **Node** installed. Both client and API were created in a Unix environment in case of compatibility issues.
 
 Clone the repository:
 
@@ -8,7 +8,7 @@ Clone the repository:
 git clone https://github.com/WebFrameworks-F21/semester-project-michaella-alex.git
 ```
 
-Open the repoistory and run
+Open the repository and run
 
 ```
 pip install -r requirements.txt
@@ -18,7 +18,7 @@ npm install
 
 ## Running
 
-Start Django by running
+Set up the database and back-end server
 
 ```
 cd Racks
@@ -26,13 +26,13 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-Follow the prompts to create your account. Finally run the following command to start the back-end server.
+Follow the prompts to create your account. Run the command below to start the back-end server.
 
 ```
 python manage.py runserver
 ```
 
-Using a separate shell, use the following command to start the front-end server.
+Using a separate shell, use the command below to start the front-end server.
 
 ```
 cd client-racks
