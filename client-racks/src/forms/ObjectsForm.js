@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 async function createObject(details, token, setError) {
-  console.log(details);
   const response = await fetch("http://localhost:8000/racks/unit/", {
     method: "POST",
     mode: "cors",
@@ -20,7 +19,6 @@ async function createObject(details, token, setError) {
       return res.json();
     }
   });
-  console.log(response);
 }
 
 export default function ObjectsForm({ token, user }) {
@@ -57,7 +55,6 @@ export default function ObjectsForm({ token, user }) {
           },
         });
         const json = await response.json();
-        console.log(json);
         setRacks(json);
       } catch (error) {
         console.log(error, "something went wrong");
@@ -65,7 +62,6 @@ export default function ObjectsForm({ token, user }) {
     }
 
     getRacks();
-    console.log(racks);
   }, []);
 
   const rackOptions = racks.map((rack) => {
@@ -178,6 +174,7 @@ export default function ObjectsForm({ token, user }) {
             }}
             required
           >
+            <option value={undefined}></option>
             {rackOptions}
           </select>
         </label>

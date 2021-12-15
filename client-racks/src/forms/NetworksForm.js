@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 async function createNetwork(details, token) {
-  console.log(details);
   const response = await fetch("http://localhost:8000/racks/network/", {
     method: "POST",
     mode: "cors",
@@ -20,8 +19,6 @@ async function createNetwork(details, token) {
       return res.json();
     }
   });
-
-  console.log(response);
 }
 
 export default function NetworksForm({ token, user }) {
