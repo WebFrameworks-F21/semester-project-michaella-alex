@@ -57,23 +57,24 @@ After logging in, you can either use the dashboard or the navigation bar to chec
 
 ## Racks
 
-You can view the available racks here and can view the racks individually by clicking on their rack names.
-You can create new racks with the button located under above the table.
+You can view the available racks here and can view the racks individually by clicking on their rack names. You can create new racks with the button located under above the table.
+
 By looking at a specified rack, you can see the objects listed and where they are located inside the rack itself as well as rack details (space, visibility, who created it). There are also buttons to update and delete it.
+
 You can access objects listed on the rack by clicking on their object names.
 
 ## Objects
 
-You can view the available object here and can view the objects individually by clicking on their object names.
-You can create new objects with the button located under above the table.
+You can view the available object here and can view the objects individually by clicking on their object names. You can create new objects with the button located under above the table.
+
 By looking at a specified objects, you can see the objects listed and where they are located inside their designated rack. There are also buttons to update and delete it.
-Based on the different types of objects, it will show details accordingly.
-Server objects have an extra table that holds network cards, as well as the option to create new ones as well.
+
+Based on the different types of objects, it will show details accordingly. Server objects have an extra table that holds network cards, as well as the option to create new ones as well.
 
 Note: Before creating a new network card, a network must be created beforehand. you will not be able to create a networkcard without one.
 
 ## Networks
 
-You can view the available networks here and can view the networks individually by clicking on their network names.
-You can create new networks with the button located under above the table.
+You can view the available networks here and can view the networks individually by clicking on their network names You can create new networks with the button located under above the table.
+
 By looking at a specified network, you can see the network cards on the network listed. There are also buttons to update and delete the network itself.
