@@ -17,15 +17,11 @@ async function deleteRack(token, id, setRedirect) {
     ).then((res) => {
       if (!res.ok) {
         return res.text().then((text) => {
-          // console.log(text);
-          // const fuck_this = JSON.parse(text);
-          // console.log("deleting rack", fuck_this);
-          throw new Error("You do not permission to delete rack");
+          throw new Error("You do not have permission to delete rack");
         });
       } else {
         alert("Rack has been deleted!");
         setRedirect(true);
-        return res.json();
       }
     });
   } catch (error) {
@@ -74,7 +70,11 @@ export default function Rack({ token, user }) {
           rows.push(
             <tr>
               <td>{i}</td>
-              <td rowspan={object[index].size}>{object[index].name}</td>
+              <td rowspan={object[index].size}>
+                <Link to={`/object/${object[index].id}`}>
+                  {object[index].name}
+                </Link>
+              </td>
             </tr>
           );
           index++;
@@ -91,39 +91,40 @@ export default function Rack({ token, user }) {
   })();
 
   return (
-    <div>
-      <h2>Rack {rack.name}</h2>
-      <h3>Owned by user {rack.user}</h3>
-
-      <button>
-        <Link to={`/rack/${rack.id}/update`}>Update Rack </Link>
-      </button>
-
-      <button onClick={() => deleteRack(token, id, setRedirect)}>
-        Delete Rack
-      </button>
-
+    <div className="single-view">
       <div>
-        <p>Size: {rack.size}</p>
-        <p>
-          Visibility:{" "}
-          {rack.public === "PR"
-            ? "Private"
-            : rack.public === "PB"
-            ? "Public"
-            : "Read-Only"}
-        </p>
+        <h2>Rack {rack.name}</h2>
+        <h3>Owned by user {rack.user}</h3>
+
+        <button>
+          <Link to={`/rack/${rack.id}/update`}>Update Rack </Link>
+        </button>
+
+        <button onClick={() => deleteRack(token, id, setRedirect)}>
+          Delete Rack
+        </button>
+        <div>
+          <p>
+            <b>Size:</b> {rack.size}
+          </p>
+          <p>
+            <b>Visibility:</b>{" "}
+            {rack.public === "PR"
+              ? "Private"
+              : rack.public === "PB"
+              ? "Public"
+              : "Read-Only"}
+          </p>
+        </div>
       </div>
 
-      <div className="view">
-        <table>
-          <tr>
-            <th>Position</th>
-            <th>Objects</th>
-          </tr>
-          {objectRows}
-        </table>
-      </div>
+      <table>
+        <tr>
+          <th>Position</th>
+          <th>Objects</th>
+        </tr>
+        {objectRows}
+      </table>
 
       {redirect && <Navigate to="/racks" />}
     </div>

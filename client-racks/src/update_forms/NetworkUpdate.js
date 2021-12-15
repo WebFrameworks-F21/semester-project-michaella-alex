@@ -13,6 +13,10 @@ async function updateNetwork(details, token, id) {
     body: JSON.stringify(details),
   }).then((res) => {
     if (!res.ok) {
+      if (res.status === 403) {
+        throw new Error("You do not have permission to update network");
+      }
+
       return res.text().then((text) => {
         throw new Error(JSON.parse(text)["ip_address"][0]);
       });
@@ -112,9 +116,9 @@ export default function NetworksForm({ token, user }) {
               setVisibility(e.target.value);
             }}
           >
-            <option value="Private">Private</option>
-            <option value="Read-Only">Read-Only</option>
-            <option value="Public">Public</option>
+            <option value="PR">Private</option>
+            <option value="RO">Read-Only</option>
+            <option value="PB">Public</option>
           </select>
         </label>
 

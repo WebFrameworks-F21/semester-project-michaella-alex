@@ -46,11 +46,14 @@ export default function Racks({ token, user }) {
   });
 
   return (
-    <div>
-      <h2>Racks Available</h2>
-      <Link to="/racks/new">
-        <button>New Rack</button>
-      </Link>
+    <div className="view">
+      <div className="title-button">
+        <h2>Racks Available</h2>
+        <Link to="/racks/new">
+          <button>New Rack</button>
+        </Link>
+      </div>
+
       <table>
         <tr>
           <th>Name</th>

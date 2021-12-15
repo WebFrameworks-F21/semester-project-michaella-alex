@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
-async function updateObject(details, token, id) {
-  console.log(details);
+async function updateObject(details, token, id, setRedirect) {
   const response = await fetch(`http://localhost:8000/racks/unit/${id}/`, {
     method: "PUT",
     mode: "cors",
@@ -14,14 +13,13 @@ async function updateObject(details, token, id) {
   }).then((res) => {
     if (!res.ok) {
       return res.text().then((text) => {
-        throw new Error(JSON.parse(text)["non_field_errors"][0]);
+        throw new Error("You do not have permission to update object");
       });
     } else {
-      return res.json();
+      alert("Object has been updated!");
+      setRedirect(true);
     }
   });
-
-  console.log(response);
 }
 
 export default function ObjectsForm({ token, user }) {
@@ -63,10 +61,9 @@ export default function ObjectsForm({ token, user }) {
           },
         });
         const json = await response.json();
-        console.log(json);
         setRacks(json);
       } catch (error) {
-        console.log(error, "something went wrong");
+        alert(error);
       }
     }
 

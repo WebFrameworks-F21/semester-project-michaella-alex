@@ -3,7 +3,7 @@ import { Navigate, useParams } from "react-router-dom";
 
 // id name, owner, size, public status
 
-async function updateRack(details, token, id) {
+async function updateRack(details, token, id, setRedirect) {
   const response = await fetch(`http://localhost:8000/racks/rackspace/${id}/`, {
     method: "PATCH",
     mode: "cors",
@@ -12,12 +12,22 @@ async function updateRack(details, token, id) {
       Authorization: `Token ${token}`,
     },
     body: JSON.stringify(details),
+  }).then((res) => {
+    if (!res.ok) {
+      return res.text().then((text) => {
+        throw new Error("You do not permission to update rack");
+      });
+    } else {
+      alert("Rack has been updated!");
+      setRedirect(true);
+    }
   });
 }
 
 export default function RacksForm({ token, user }) {
   const { id } = useParams();
   const [rack, setRack] = useState({});
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     async function getRack() {
@@ -48,7 +58,6 @@ export default function RacksForm({ token, user }) {
   const [name, setName] = useState("");
   const [size, setSize] = useState(0);
   const [visibility, setVisibility] = useState("PR");
-  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     setName(rack.name);
@@ -67,16 +76,15 @@ export default function RacksForm({ token, user }) {
           visibility,
         },
         token,
-        id
+        id,
+        setRedirect
       );
       alert("Rack has been updated!");
       setRedirect(true);
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
-
-  console.log(name, size, visibility);
 
   return (
     <div>

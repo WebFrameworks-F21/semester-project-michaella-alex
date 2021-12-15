@@ -26,8 +26,6 @@ export default function NetworkCardsForm({ token, user }) {
 
   const [redirect, setRedirect] = useState(false);
 
-  console.log(serverId);
-
   const handleSubmit = async function (event) {
     event.preventDefault();
     console.log(networkId);
@@ -77,7 +75,7 @@ export default function NetworkCardsForm({ token, user }) {
       let options = networks.map((network) => {
         return (
           <option value={parseInt(network.id)}>
-            {network.name} and {network.id}
+            {network.name} - {network.ip_address}
           </option>
         );
       });
@@ -115,7 +113,7 @@ export default function NetworkCardsForm({ token, user }) {
 
         <input type="submit" />
       </form>
-      {/* {redirect && <Navigate to={/>} */}
+      {redirect && <Navigate to={"/object/" + serverId.id} />}
     </div>
   );
 }

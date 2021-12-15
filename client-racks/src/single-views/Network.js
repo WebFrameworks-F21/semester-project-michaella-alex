@@ -11,12 +11,18 @@ async function deleteNetwork(token, id, setRedirect) {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,
       },
+    }).then((res) => {
+      if (!res.ok) {
+        return res.text().then((text) => {
+          throw new Error("You do not permission to delete rack");
+        });
+      } else {
+        alert("Network has been deleted!");
+        setRedirect(true);
+      }
     });
-    alert("Network has been deleted!");
-    setRedirect(true);
-    console.log(response);
   } catch (error) {
-    console.log(error, "something went wrong");
+    alert(error);
   }
 }
 
@@ -73,27 +79,29 @@ export default function Network({ token, user }) {
   }, [network]);
 
   return (
-    <div>
-      <h2>Network {network.name}</h2>
-      <h3>Owned by user {network.user}</h3>
+    <div className="view">
+      <div className="title-button">
+        <h2>Network {network.name}</h2>
+        <h3>Owned by user {network.user}</h3>
 
-      <Link to={`/network/${network.id}/update`}>
-        <button>Update Network</button>
-      </Link>
+        <Link to={`/network/${network.id}/update`}>
+          <button>Update Network</button>
+        </Link>
 
-      <button onClick={() => deleteNetwork(token, id, setRedirect)}>
-        Delete Network
-      </button>
+        <button onClick={() => deleteNetwork(token, id, setRedirect)}>
+          Delete Network
+        </button>
 
-      <div>
-        <p>
-          Visibility:{" "}
-          {network.public === "PR"
-            ? "Private"
-            : network.public === "PB"
-            ? "Public"
-            : "Read-Only"}
-        </p>
+        <div>
+          <p>
+            Visibility:{" "}
+            {network.public === "PR"
+              ? "Private"
+              : network.public === "PB"
+              ? "Public"
+              : "Read-Only"}
+          </p>
+        </div>
       </div>
 
       <table>

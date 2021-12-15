@@ -48,11 +48,14 @@ export default function Networks({ token, user }) {
   });
 
   return (
-    <div>
-      <h2>Networks Available</h2>
-      <Link to="/networks/new">
-        <button>New Network</button>
-      </Link>
+    <div className="view">
+      <div className="title-button">
+        <h2>Networks Available</h2>
+        <Link to="/networks/new">
+          <button>New Network</button>
+        </Link>
+      </div>
+
       <table>
         <tr>
           <th>Name</th>

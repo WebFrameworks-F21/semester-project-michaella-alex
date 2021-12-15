@@ -10,6 +10,7 @@ nav {
   height: 3em;
   display: flex;
   align-items: center;
+  padding-left: 1em;
 }
 
 nav a {
@@ -30,10 +31,6 @@ form {
   flex-direction: column;
 }
 
-/* .label-form {
-  display: flex;
-} */
-
 input[type="text"],
 input[type="password"],
 input[type="number"],
@@ -52,6 +49,11 @@ input[type="submit"] {
   margin-right: 1em;
 }
 
+.title-button button {
+  width: 10em;
+  margin: auto;
+}
+
 label {
   margin-bottom: 1em;
   /* align-items: center; */
@@ -59,6 +61,13 @@ label {
 
 .body {
   padding: 2em;
+}
+
+.single-view {
+  display: flex;
+  flex-direction: row;
+  padding: 0em 8em 5em 5em;
+  justify-content: space-between;
 }
 
 .dash-menu {
@@ -71,17 +80,22 @@ label {
 }
 
 .dash-button {
-  width: 15em;
-  height: 20em;
+  width: 15rem;
+  height: 20rem;
   background-color: #666f88;
   border-radius: 8px;
-  margin-right: 2em;
+  margin-right: 2rem;
+  color: white;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dash-button a,
 .dash-button a:hover,
 .dash-button a:active,
-.dash-button :visited {
+.dash-button a:visited {
   color: white;
 }
 
@@ -117,9 +131,10 @@ label {
 
 td,
 th {
-  width: 10em;
+  width: 15em;
   padding: 4px;
   border: 1px solid #686868;
+  text-align: center;
 }
 
 .bar {
@@ -139,4 +154,17 @@ th {
 
 .bar:nth-child(4) {
   background-color: #01ff70;
+}
+
+.title-button {
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 2em;
+}
+
+.view table {
+  margin: auto;
 }

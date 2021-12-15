@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 async function loginUser(credentials) {
   const data = await fetch("http://localhost:8000/api-auth/", {
@@ -24,17 +24,16 @@ async function loginUser(credentials) {
 export default function Login({ setToken, setUser }) {
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const handleSubmit = async function (event) {
     event.preventDefault();
     try {
       const token = await loginUser({
-        // username: userName,
-        // password: userPassword,
-        username: "ming",
-        password: "karamell",
+        username: userName,
+        password: userPassword,
       });
-      console.log(token);
+      setRedirect(true);
       setToken(token.token);
       setUser(token.user_id);
 
@@ -73,6 +72,7 @@ export default function Login({ setToken, setUser }) {
           <Link to="/signup">Create an account here</Link>
         </div>
       </div>
+      {redirect && <Navigate to="/racks" />}
     </div>
   );
 }

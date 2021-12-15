@@ -17,15 +17,13 @@ export default function Objects({ token, user }) {
           },
         });
         const json = await response.json();
-        console.log(response);
         setObjects(json);
       } catch (error) {
-        console.log(error, "something went wrong");
+        // console.log(error, "something went wrong");
       }
     }
 
     getObjects();
-    console.log(objects);
   }, []);
 
   useEffect(() => {
@@ -47,11 +45,14 @@ export default function Objects({ token, user }) {
   }, [objects]);
 
   return (
-    <div>
-      <h2>Objects Available</h2>
-      <Link to="/objects/new">
-        <button>New Object</button>
-      </Link>
+    <div className="view">
+      <div className="title-button">
+        <h2>Objects Available</h2>
+        <Link to="/objects/new">
+          <button>New Object</button>
+        </Link>
+      </div>
+
       <table>
         <tr>
           <th>Name</th>

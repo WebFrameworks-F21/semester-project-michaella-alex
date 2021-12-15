@@ -80,9 +80,9 @@ export default function NetworksForm({ token, user }) {
               setVisibility(e.target.value);
             }}
           >
-            <option value="Private">Private</option>
-            <option value="Read-Only">Read-Only</option>
-            <option value="Public">Public</option>
+            <option value="PR">Private</option>
+            <option value="RO">Read-Only</option>
+            <option value="PB">Public</option>
           </select>
         </label>
 
